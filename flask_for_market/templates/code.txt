@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}
+{% endblock %}
+{% block body %}
+{% endblock %}
+
+## this to be done in the app.py
+
+import os
+from flask import Flask, render_template, request, url_for, redirect
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+app = Flask(__name__)
+
+#initializing app to accept dictionary
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'market.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+#database initialization
+db = SQLAlchemy(app)
+
+#model initialization
+class Items(db.Model):
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    name = db.Column(db.String(length=30), nullable=False, unique=True)
+    price = db.Column(db.Integer(), nullable=False)
+    barcode = db.Column(db.String(length=12), nullable=False)
+    description = db.Column(db.String(length=512), nullable=False, unique=True)
+
+    def __repr__(self):
+        return f'<Items {self.name}>'
+
+
+## this to be done in the shell
+set FLASK_APP=app
+flask shell
+from app import db, items
+#to create database
+db.create_all()
+#to delete database
+db.drop_all()
+#insert into the table
+item1 = Items(name='Iphone X', price=500, barcode='813578092345', description='Apple Product')
+item2 = Items(name='HP Elitebook 830g', price=750, barcode='169023478012', description='Office Laptop, Made for quality users')
+item3 = Items(name='HP XVIN Keyboard', price=150, barcode='457892134789', description='Great flex for anyone that uses keyboard for more task')
+#check the information not yet populated
+item1
+item1.price
+item1.barcode
+#to populate the code into the database
+db.session.add(item1)
+#to commit or save 
+db.session.commit()
+#to view student id
+print(item1.id)
+#you can use db.session.add() to to edit someone record
+item1.price = 535
+db.session.add(item1)
+db.session.commit() 
+#to view all the items stored
+Items.query.all()
+
+#to filter by where
+Items.query.filter_by(price=500);
