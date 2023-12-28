@@ -65,3 +65,13 @@ Items.query.all()
 
 #to filter by where
 Items.query.filter_by(price=500);
+
+user1 = Users(username='admin', email_address='admin@mail.com', password='123456')
+
+#to add owner to the Items
+item1.owner =Users.query.filter_by(username='admin').first().id
+db.session.add(item1)
+db.session.commit(item1)
+
+#to rollback previous commit
+db.session.rollback()
