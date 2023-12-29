@@ -38,6 +38,21 @@
         <div class="col-4">
             <h1>Market Purchased</h1>
             <p>Click on sell item to make profit</p>
+            <br>
+            <div class="row">
+                {% for owned_item in owned_items %}
+                {% include 'includes/owned_items_modals.html' %}
+                    <div class="col-md-8">
+                        <div class="card text-center bg-dark" style="margin-bottom: 5px;">
+                            <div class="card-body" style="color: white;">
+                                <h5 class="card-title">{{ owned_item.name }}</h5>
+                                <button class="btn btn-outline-danger" type="button" style="margin-bottom: 5px;" data-bs-toggle="modal" data-bs-target="#Modal-SellingConfirm-{{ owned_item.id }}">Sell this Item</button>
+                                <p class="card-text"><strong>This item costs ${{ owned_item.price }}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
