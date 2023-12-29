@@ -3,7 +3,7 @@ from flask import render_template, redirect, url_for, flash
 from app.models import Items, Users
 from app.forms import RegisterForm, LoginForm
 from app import db
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, login_required
 
 @app.route('/')
 @app.route('/home/')
@@ -11,6 +11,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/market/')
+@login_required
 def market():
     items = Items.query.all()
     return render_template('market.html', items=items)
